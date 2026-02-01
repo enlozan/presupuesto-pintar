@@ -109,7 +109,7 @@
             color: #2c3e50;
         }
         
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid #ddd;
@@ -118,7 +118,7 @@
             transition: border-color 0.3s;
         }
         
-        input:focus, select:focus {
+        input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #3498db;
         }
@@ -361,6 +361,20 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+        
+        /* Placeholders */
+        ::placeholder {
+            color: #95a5a6;
+            opacity: 0.8;
+        }
+        
+        /* Información de ayuda */
+        .help-text {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -386,11 +400,13 @@
                         <div class="form-group">
                             <label for="location"><i class="fas fa-map-marker-alt"></i> Ubicación de la vivienda</label>
                             <input type="text" id="location" required placeholder="Ej: Centro Madrid, Chamberí, etc.">
+                            <div class="help-text">Indique la zona de Madrid donde se encuentra la vivienda</div>
                         </div>
                         
                         <div class="form-group">
                             <label for="square-meters"><i class="fas fa-ruler-combined"></i> Metros cuadrados de la vivienda</label>
                             <input type="number" id="square-meters" min="10" max="500" required placeholder="Ej: 75">
+                            <div class="help-text">Superficie total a pintar en metros cuadrados</div>
                         </div>
                         
                         <div class="form-group">
@@ -405,6 +421,7 @@
                                     <label for="furnished-no">No</label>
                                 </div>
                             </div>
+                            <div class="help-text">Si hay muebles, aplicamos recargo por protección y trabajo adicional</div>
                         </div>
                     </div>
                     
@@ -412,7 +429,7 @@
                         <div class="form-group">
                             <label for="rooms"><i class="fas fa-bed"></i> Número de habitaciones</label>
                             <select id="rooms" required>
-                                <option value="">Seleccione</option>
+                                <option value="" disabled selected>Seleccione el número</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -424,7 +441,7 @@
                         <div class="form-group">
                             <label for="bathrooms"><i class="fas fa-bath"></i> Número de baños</label>
                             <select id="bathrooms" required>
-                                <option value="">Seleccione</option>
+                                <option value="" disabled selected>Seleccione el número</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -444,6 +461,7 @@
                                     <label for="texture-smooth">Lisas</label>
                                 </div>
                             </div>
+                            <div class="help-text">El gotele requiere más preparación antes de pintar</div>
                         </div>
                     </div>
                 </div>
@@ -462,6 +480,7 @@
                                     <label for="current-colors">Colores</label>
                                 </div>
                             </div>
+                            <div class="help-text">Pintar sobre colores oscuros puede requerir más manos de pintura</div>
                         </div>
                     </div>
                     
@@ -469,12 +488,13 @@
                         <div class="form-group">
                             <label for="desired-finish"><i class="fas fa-brush"></i> ¿Cómo desea pintarlo ahora?</label>
                             <select id="desired-finish" required>
-                                <option value="">Seleccione</option>
+                                <option value="" disabled selected>Seleccione una opción</option>
                                 <option value="white">Blanco</option>
                                 <option value="light-colors">Colores claros</option>
                                 <option value="dark-colors">Colores oscuros</option>
-                                <option value="smooth">Alisar paredes</option>
+                                <option value="smooth">Alisar paredes (eliminar gotele)</option>
                             </select>
+                            <div class="help-text">Los colores claros y oscuros tienen recargo de 100€</div>
                         </div>
                     </div>
                 </div>
@@ -755,18 +775,18 @@
             } else if (squareMeters >= 30 && squareMeters < 40) {
                 pricePerSquareMeter = 4.25;
             } else if (squareMeters >= 40 && squareMeters < 50) {
-                pricePerSquareMeter = 4.0;
+                pricePerSquareMeter = 3.8;
             } else if (squareMeters >= 50 && squareMeters < 60) {
-                pricePerSquareMeter = 3,8;
-            } else if (squareMeters >= 60 && squareMeters < 70) {
                 pricePerSquareMeter = 3.6;
+            } else if (squareMeters >= 60 && squareMeters < 70) {
+                pricePerSquareMeter = 3.3;
             } else if (squareMeters >= 70 && squareMeters < 80) {
-                pricePerSquareMeter = 3.5;
+                pricePerSquareMeter = 3.20;
             } else if (squareMeters >= 80 && squareMeters <= 100) {
-                pricePerSquareMeter = 3.25;
+                pricePerSquareMeter = 3.00;
             } else {
                 // Para viviendas de más de 100 metros
-                pricePerSquareMeter = 3.0;
+                pricePerSquareMeter = 2.8;
             }
             
             // Calcular precio base
@@ -1044,19 +1064,6 @@
             dayElement.className = 'calendar-day';
             dayElement.textContent = day;
             calendarDaysElement.appendChild(dayElement);
-        });
-        
-        // Datos de ejemplo para facilitar pruebas
-        window.addEventListener('DOMContentLoaded', () => {
-            // Rellenar con datos de ejemplo (solo para pruebas)
-            locationInput.value = "Centro de Madrid";
-            squareMetersInput.value = "75";
-            document.getElementById('furnished-yes').checked = true;
-            roomsInput.value = "3";
-            bathroomsInput.value = "2";
-            document.getElementById('texture-gotele').checked = true;
-            document.getElementById('current-colors').checked = true;
-            desiredFinishInput.value = "light-colors";
         });
     </script>
 </body>
