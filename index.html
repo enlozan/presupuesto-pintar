@@ -375,6 +375,18 @@
             margin-top: 5px;
             font-style: italic;
         }
+        
+        /* Etiqueta de precio */
+        .price-tag {
+            display: inline-block;
+            background-color: #f1c40f;
+            color: #2c3e50;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -489,12 +501,12 @@
                             <label for="desired-finish"><i class="fas fa-brush"></i> ¿Cómo desea pintarlo ahora?</label>
                             <select id="desired-finish" required>
                                 <option value="" disabled selected>Seleccione una opción</option>
-                                <option value="white">Blanco</option>
-                                <option value="light-colors">Colores claros</option>
-                                <option value="dark-colors">Colores oscuros</option>
+                                <option value="white">Blanco (sin recargo)</option>
+                                <option value="light-colors">Colores claros <span class="price-tag">+100€</span></option>
+                                <option value="dark-colors">Colores oscuros <span class="price-tag">+200€</span></option>
                                 <option value="smooth">Alisar paredes (eliminar gotele)</option>
                             </select>
-                            <div class="help-text">Los colores claros y oscuros tienen recargo de 100€</div>
+                            <div class="help-text">Los colores claros tienen recargo de 100€ y los oscuros de 200€</div>
                         </div>
                     </div>
                 </div>
@@ -795,7 +807,7 @@
             
             if (desiredFinish === 'smooth') {
                 // Cálculo para alisar
-                basePrice = squareMeters * 2.75 * 12.5;
+                basePrice = squareMeters * 2.75 * 13.5;
                 workType = 'Alisar paredes';
             } else {
                 // Cálculo para pintar
@@ -816,9 +828,14 @@
             let furnitureSurcharge = 0;
             let smoothingSurcharge = 0;
             
-            // Recargo por pintar en colores
-            if (desiredFinish === 'light-colors' || desiredFinish === 'dark-colors') {
+            // Recargo por pintar en colores CLAROS (100€)
+            if (desiredFinish === 'light-colors') {
                 colorSurcharge = 100;
+            }
+            
+            // Recargo por pintar en colores OSCUROS (200€)
+            if (desiredFinish === 'dark-colors') {
+                colorSurcharge = 200;
             }
             
             // Recargo por vivienda amueblada
